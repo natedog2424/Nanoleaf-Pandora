@@ -1,0 +1,21 @@
+{
+  "name": "nanoleaf-pandora",
+  "version": "1.0.0",
+  "description": "Pandora Album Palette",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "your mom",
+  "license": "ISC",
+  "dependencies": {
+    "anesidora": "^1.2.1",
+    "appjs": "0.0.20",
+    "appjs-win32": "0.0.19",
+    "nanoleaves": "^1.2.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "electron": "^4.0.0"
+  }
+}
