@@ -1,0 +1,51 @@
+{
+ "explodeFactor": 0,
+ "pluginUuid": "60333927-cc36-4a5a-a682-9bd114de8bff",
+ "transTime": {
+  "minValue": 0,
+  "maxValue": 0
+ },
+ "pluginType": "rhythm",
+ "animName": "Pulse Pop Beats",
+ "version": "1.0",
+ "colorType": "HSB",
+ "brightnessRange": {
+  "minValue": 0,
+  "maxValue": 0
+ },
+ "windowSize": 0,
+ "loop": false,
+ "palette": [
+  {
+   "saturation": 0,
+   "brightness": 2,
+   "hue": 0
+  },
+  {
+   "saturation": 14,
+   "brightness": 79,
+   "hue": 28
+  },
+  {
+   "saturation": 11,
+   "brightness": 35,
+   "hue": 25
+  },
+  {
+   "saturation": 1,
+   "brightness": 45,
+   "hue": 300
+  },
+  {
+   "saturation": 1,
+   "brightness": 48,
+   "hue": 60
+  }
+ ],
+ "delayTime": {
+  "minValue": 0,
+  "maxValue": 0
+ },
+ "flowFactor": 0,
+ "animType": "plugin"
+}

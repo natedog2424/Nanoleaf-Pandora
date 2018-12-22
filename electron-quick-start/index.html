@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head><style type="text/css">.lw { font-size: 60px; }
+
+.page{
+  margin: 0;
+  padding: 0;
+  background-color: #000000;
+  overflow: hidden;
+}
+
+.bg-art{
+  
+  transition: all 300ms cubic-bezier(0.77, 0, 0.175, 1);
+
+margin: 0;
+padding: 0;
+
+filter: blur(20px);
+-webkit-filter: blur(20px)  brightness(70%);
+
+
+
+overflow: hidden;
+position: fixed;
+
+display: block;
+width: auto;
+height: auto;
+min-height: 120%;
+min-width: 120%; 
+transform: scale(1.3);
+
+}
+.play{
+transform: scale(1);
+transition: all 300ms cubic-bezier(0.77, 0, 0.175, 1);
+-webkit-filter: blur(10px) brightness(85%);
+}
+.overflow{
+ 
+  width:      110%;
+  height:     110%; 
+  z-index:    -100;
+  top:        -5%; 
+  left:       -5%; 
+  position:   fixed;  
+  overflow: hidden;
+}
+.album-art{
+  box-shadow: 0 0 70px #000000;
+    display: block;
+transition: transform 300ms cubic-bezier(0.77, 0, 0.175, 1);
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 8px
+}
+
+.controls{
+  color: #FFFFFF;
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  
+  margin: auto;
+}
+.ico{
+  position: relative;
+  right: 50%;
+  font-size: 0;
+}
+.md-18 {     width: 18px;
+    height: 18px;}
+.md-24 {     width: 24px;
+    height: 24px;}
+.md-36 {     width: 36px;
+    height: 36px; }
+.md-48 {     width: 48px;
+    height: 48px; }
+.material-icons-new {
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.icon-white {
+    -webkit-filter: contrast(4) invert(1);
+    -moz-filter: contrast(4) invert(1);
+    -o-filter: contrast(4) invert(1);
+    -ms-filter: contrast(4) invert(1);
+    filter: contrast(4) invert(1);
+}
+.art_play{
+  transform: scale(0.9);
+}
+
+.menu{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+}
+</style>
+
+<title>Pandora</title>
+
+  <link rel="stylesheet" href="https://storage.googleapis.com/non-spec-apps/mio-icons/latest/round.css">
+</head>
+<body><div class="overflow">  
+<img class="bg-art play" id="bg"></img>
+</div>
+ <img onload="onResize()" id="album-art" class="album-art" src="" height="197" width="399">
+<audio id="player" class="player">
+  <source src="" type="audio/mpeg">
+Your browser does not support the audio element.
+</audio>
+<div class="controls">
+  <a href="#" id="plpause" class="ico">
+    <i class="material-icons-new md-48 icon-white round-play_arrow"></i>
+  </a> 
+  <a href="#" id="mute" class="ico">
+    <i class="material-icons-new md-48 icon-white round-volume_up"></i>
+  </a> 
+</div>
+<a href="#" id="menu" class="menu">
+  <i  class="material-icons-new round-menu md-36 icon-white"></i>
+</a> 
+<script>
+const fs = require('fs');
+let auth = fs.readFileSync("auth.json");
+let anim = fs.readFileSync("anim.json");
+let auth_token = JSON.parse(auth).auth_token;
+const AuroraAPI = require('nanoleaves');
+const aurora = new AuroraAPI({
+    host: '192.168.86.249',
+    token: auth_token
+});
+ 
+//aurora.info().then(info =>
+//{
+//    console.log(info);
+//});
+
+var Anesidora = require("anesidora");
+ 
+var pandora = new Anesidora("natedog2424@cox.net", "david5");
+
+
+
+
+var artbg = document.getElementById("bg");
+var h;
+var w;
+function onResize(){
+  var albumArt = document.getElementById("album-art");
+  w = window.innerWidth;
+  h = window.innerHeight;
+  
+  resize(albumArt,0.7);
+  
+}
+function resize(element,factor){
+    if(h > w){
+    element.width = w*factor;
+    element.height = element.width;
+  }else{
+    element.height = h*factor;
+    element.width = element.height;
+  }
+}
+window.addEventListener("resize", onResize);
+document.addEventListener("load", onLoad);
+var audio = document.getElementById('player'),
+    plpause = document.getElementById('plpause'),
+    mute = document.getElementById("mute");
+
+plpause.onclick = function () {
+    var albumArt = document.getElementById("album-art");
+    var icon = plpause.children.item(0);
+    var paused = icon.classList.contains("round-pause");
+    var method;
+    if(paused){
+       artbg.classList.add('play');
+      albumArt.classList.remove('art_play');
+      icon.classList.remove("round-pause");
+      icon.classList.add("round-play_arrow");
+      method = 'pause';
+    }else{
+      artbg.classList.remove('play');
+      albumArt.classList.add('art_play');
+      icon.classList.remove("round-play_arrow");
+      icon.classList.add("round-pause");
+      method = 'play';
+    }  
+    audio[method]();
+    return false;
+};
+mute.onclick = function () {
+    var icon = mute.children.item(0);
+    var muted = icon.classList.contains("round-volume_off");
+    var midVol = icon.classList.contains("round-volume_down");
+    var method;
+    if(muted){
+      icon.classList.remove("round-volume_off");
+      icon.classList.add("round-volume_up");
+      method = 1.0;
+    }else if(midVol){
+      icon.classList.remove("round-volume_down");
+      icon.classList.add("round-volume_off");
+      method = 0.0;
+    }else{
+      icon.classList.remove("round-volume_up");
+      icon.classList.add("round-volume_down");
+      method = 0.5;
+    }
+    audio.volume = method;
+    return false;
+};
+
+function onLoad(){
+}
+pandora.login(function(err) {
+    if (err) throw err;
+    pandora.request("user.getStationList", function(err, stationList) {
+        if (err) throw err;
+        var station = stationList.stations[0];
+        pandora.request("station.getPlaylist", {
+            "stationToken": "3998223891361446696",
+            "additionalAudioUrl": "HTTP_128_MP3"
+        }, function(err, playlist) {
+            if (err) throw err;
+            var track = playlist.items[0];
+            console.log("Playing '" + track.songName + "' by " + track.artistName);
+            console.log(track.additionalAudioUrl);
+            console.log(track.albumArtUrl);
+            document.getElementById("player").src = track.additionalAudioUrl;
+            document.getElementById("album-art").src = track.albumArtUrl;
+            document.getElementById("bg").src = track.albumArtUrl;
+            const path = require('path')
+            const getColors = require('get-image-colors')
+            getColors(track.albumArtUrl).then(colors => {
+              console.log(colors.map(color => color.hex()));
+              var animColors = fs.readFileSync("anim.json");
+              var json = JSON.parse(animColors);
+              console.log(json);
+              
+              hslColors = colors.map(color => color.hsl());
+              for (color in hslColors) {
+                if (isNaN(hslColors[color][0])){
+                 json.palette[color].hue = 0
+                } else {
+                json.palette[color].hue = Math.round(hslColors[color][0]);
+                }
+                json.palette[color].saturation = Math.round(hslColors[color][1] * 100);
+                json.palette[color].brightness = Math.round(hslColors[color][2] * 100);
+              }
+              //json = JSON.stringify(json, null, 1);
+              //console.log(json);
+              
+              fs.writeFileSync('anim.json', JSON.stringify(json, null, 1));
+              //json = fs.readFileSync("anim.json");
+              aurora.addAnimation(json);
+            })
+            
+           
+
+        });
+    });
+});
+//
+</script>
+</body>
